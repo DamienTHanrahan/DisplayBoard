@@ -4,31 +4,133 @@
 
 // Simple structs for items and lists
 /* self-referential structure */
-struct item {
+typedef struct item {
     char name[50]; /* each listNode contains a character */
     struct item *next;/* pointer to next node */
-};/* end structure item */ 
+}Item;/* end structure item */ 
 
-struct list {
+typedef struct list {
     char name[50];
     Item *items;
-    struct List *next;
-};
+    struct list *next;
+}List;
 
 List *board = NULL;
-
-typedef struct list List;
-typedef struct item Item; /* synonym for struct listNode */
+    // prototypes
+    void displayBoard();
+    void loadBoardFromFile(char *filename);
+    void addList(char *name);
+    List* findList(char *name);
+    void addItemToList(List *list, char *itemName);
 
 //generic file processing code
 void loadBoardFromFile(char *filename) {
-    FILE *file = fopen(filename, "r");
+    FILE *file = fopen(filename, "r"); // open for reading
+    int lineNum = 0; // Initialize lineNum
+
     if (!file) {
         printf("Error: could not open file %s\n", filename);
         return;
     }
-
-    
-    fclose(file);
+    else {
+        char listName[50], itemName[50];
+        while (fscanf(file, "%s", listName) != EOF) {
+            addList(listName);
+            List *list = findList(listName);
+            while (fscanf(file, "%s", itemName) != EOF && strcmp(itemName, "-") != 0) {
+                addItemToList(list, itemName);
+            }
+        }
+        
+    }
+        fclose(file);
+}
+// displays the loaded file   
+void displayBoard() {
+    List *current = board;
+    if (current == NULL) {
+        printf("Board is empty.\n");
+        return;
+    }
+    while (current != NULL) {
+        printf("%s:\n", current->name);
+        Item *item = current->items;
+        while (item != NULL) {
+            printf("    %s\n", item->name);
+            item = item->next;
+        }
+        current = current->next;
+    }
 }
 
+
+
+
+
+int main() {
+    
+   int choice;
+   while (1) {
+       printf("\nMenu:\n");
+       printf("1. Display board\n");
+       printf("2. Load board from a file\n");
+       printf("3. Edit list\n");
+       printf("4. Edit Board\n");
+       printf("5. Save board to a file\n");
+       printf("6. Quit\n");
+       printf("Enter your choice: ");
+       scanf("%d", &choice);
+       getchar();
+
+       if (choice == 6) {
+           printf("Bye!\n");
+           
+           break;
+       }
+
+       if (choice == 1) {
+           displayBoard();
+       } else if (choice == 2) {
+           char filename[50];
+           printf("Enter filename: ");
+           scanf("%s", filename);
+           loadBoardFromFile(filename);
+       } else if (choice == 3) {
+           //editList();
+       } else if (choice == 4) {
+           //editBoard();
+       } else if (choice == 5) {
+           //saveBoardToFile();
+       } else {
+           printf("Invalid choice. Try again.\n");
+       }
+   }
+
+
+    return 0;
+}
+
+void addItemToList(List *list, char *itemName) {
+    Item *newItem = (Item*)malloc(sizeof(Item));
+    strcpy(newItem->name, itemName);
+    newItem->next = list->items;
+    list->items = newItem;
+}
+
+void addList(char *name) {
+    List *newList = (List*)malloc(sizeof(List));
+    strcpy(newList->name, name);
+    newList->items = NULL;
+    newList->next = board;
+    board = newList;
+}
+
+List* findList(char *name) {
+    List *current = board;
+    while (current) {
+        if (strcmp(current->name, name) == 0)
+            return current;
+        current = current->next;
+    }
+    return NULL;
+}
