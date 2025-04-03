@@ -22,7 +22,6 @@ List *board = NULL;
     void addList(char *name);
     List* findList(char *name);
     void addItemToList(List *list, char *itemName);
-    printf("test\n");
 
 //generic file processing code
 void loadBoardFromFile(char *filename) {
@@ -63,13 +62,12 @@ void displayBoard() {
         current = current->next;
     }
 }
-
-
-
-
-
 int main() {
-    
+
+    char *WEATHER_FILE_PATH = "weather.txt";
+    loadBoardFromFile(WEATHER_FILE_PATH);
+
+
    int choice;
    while (1) {
        printf("\nMenu:\n");
