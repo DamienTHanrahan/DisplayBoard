@@ -22,6 +22,7 @@ List *board = NULL;
     void addList(char *name);
     List* findList(char *name);
     void addItemToList(List *list, char *itemName);
+    printf("test\n");
 
 //generic file processing code
 void loadBoardFromFile(char *filename) {
