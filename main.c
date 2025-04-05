@@ -31,11 +31,14 @@ List *board = NULL;
     void editListName(char *name);
     void deleteListFromBoard (char *name);
     void printLists();
+    void clearBoard();
     
 
 
 //generic file processing code
 void loadBoardFromFile(char *filename) {
+
+    clearBoard();
     FILE *file = fopen(filename, "r"); // open for reading
     int lineNum = 0; // Initialize lineNum
 
@@ -143,7 +146,7 @@ int main() {
            //editList();
        } else if (choice == 4) {
 
-        void editBoard ();
+        editBoard ();
 
 
            //editBoard();
@@ -194,9 +197,10 @@ Item* findItem(List *list, char *name) {
 
 void editList (List *list) {
 
+    int choice;
     while (1) {
         
-        int choice;
+        
         printf("\nOptions:\n");
         printf("1. Edit an item\n");
         printf("2. Add a new item\n");
@@ -332,9 +336,11 @@ void deleteItemFromList (List *list, char* name) {
 
 void editBoard () {
 
+    int choice;
+
     while (1) {
 
-        int choice;
+        
         
         printf("\nOptions:\n");
         printf("1. Edit the name of a list\n");
@@ -459,5 +465,30 @@ void printLists() {
     printf("%s\n", current->name); 
         current = current->next; 
     }
+}
+
+void clearBoard() {
+
+    List *current = board;
+    List *anteCurrent = NULL;
+    
+    while (current != NULL) {
+         
+        Item *currentItem = current->items;
+        Item *anteCurrentItem = NULL; 
+        while (currentItem != NULL) {
+            anteCurrentItem = currentItem;
+            currentItem = currentItem->next;
+            free (anteCurrentItem); 
+        }
+        anteCurrent = current;
+        current = current->next;
+        free (anteCurrent);  
+        
+        
+    }
+
+    board = NULL; 
+
 }
 

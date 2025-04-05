@@ -1,0 +1,32 @@
+Europe
+Spain
+Portugal
+Russia
+Germany
+France
+Italy
+Spain
+England
+Sweden
+Switzerland
+-
+South America
+Brazil
+Argentina
+Uruguay
+Chile
+-
+North America
+USA
+Canada
+Mexico
+-
+Africa
+Morocco
+South Africa
+-
+Asia
+South Korea
+Japan
+Qatar
+Saudi Arabia
