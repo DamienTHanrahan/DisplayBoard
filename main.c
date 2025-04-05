@@ -43,14 +43,18 @@ void loadBoardFromFile(char *filename) {
             }
             strcpy (listName, linebreak);
             addList(listName);
-            List *list = findList(listName);
-            while (fgets(linebreak, sizeof(linebreak), file) != NULL && strcmp(linebreak, "-") != 0) {
+            List *list = board;
+            while (fgets(linebreak, sizeof(linebreak), file) != NULL) {
                 size_t len = strlen(linebreak);
             if (len > 0 && linebreak[len - 1] == '\n') {
                 linebreak[len - 1] = '\0'; 
             }
+               if (strcmp(linebreak, "-") == 0) { break;}
+               else {
+
                 strcpy (itemName, linebreak);
                 addItemToList(list, itemName); 
+               }
             }
         }
         
