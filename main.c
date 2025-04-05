@@ -23,6 +23,7 @@ List *board = NULL;
     List* findList(char *name);
     void addItemToList(List *list, char *itemName);
 
+
 //generic file processing code
 void loadBoardFromFile(char *filename) {
     FILE *file = fopen(filename, "r"); // open for reading
@@ -34,11 +35,22 @@ void loadBoardFromFile(char *filename) {
     }
     else {
         char listName[50], itemName[50];
-        while (fscanf(file, "%s", listName) != EOF) {
+        char linebreak[50]; 
+        while (fgets(linebreak, sizeof(linebreak), file) != NULL) {
+            size_t len = strlen(linebreak);
+            if (len > 0 && linebreak[len - 1] == '\n') {
+                linebreak[len - 1] = '\0'; 
+            }
+            strcpy (listName, linebreak);
             addList(listName);
             List *list = findList(listName);
-            while (fscanf(file, "%s", itemName) != EOF && strcmp(itemName, "-") != 0) {
-                addItemToList(list, itemName);
+            while (fgets(linebreak, sizeof(linebreak), file) != NULL && strcmp(linebreak, "-") != 0) {
+                size_t len = strlen(linebreak);
+            if (len > 0 && linebreak[len - 1] == '\n') {
+                linebreak[len - 1] = '\0'; 
+            }
+                strcpy (itemName, linebreak);
+                addItemToList(list, itemName); 
             }
         }
         
@@ -62,12 +74,16 @@ void displayBoard() {
         current = current->next;
     }
 }
+
+
+
+
+
 int main() {
 
     char *WEATHER_FILE_PATH = "weather.txt";
     loadBoardFromFile(WEATHER_FILE_PATH);
-
-
+    
    int choice;
    while (1) {
        printf("\nMenu:\n");
@@ -116,7 +132,7 @@ void addItemToList(List *list, char *itemName) {
     list->items = newItem;
 }
 
-void addList(char *name) {
+void addList(char *name) {  
     List *newList = (List*)malloc(sizeof(List));
     strcpy(newList->name, name);
     newList->items = NULL;
