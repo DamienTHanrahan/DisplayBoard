@@ -37,18 +37,19 @@ List *board = NULL;
 
 //generic file processing code
 void loadBoardFromFile(char *filename) {
-
+    // empty lists
     clearBoard();
     FILE *file = fopen(filename, "r"); // open for reading
     int lineNum = 0; // Initialize lineNum
 
     if (!file) {
+        //error handling
         printf("Error: could not open file %s\n", filename);
         return;
     }
     else {
         char listName[50], itemName[50];
-        char linebreak[50]; 
+        char linebreak[50]; // copy in the lines and add them using helper functions
         while (fgets(linebreak, sizeof(linebreak), file) != NULL) {
             size_t len = strlen(linebreak);
             if (len > 0 && linebreak[len - 1] == '\n') {
@@ -97,7 +98,7 @@ void displayBoard() {
 
 
 int main() {
-
+    // load pre defined board
     char *WEATHER_FILE_PATH = "weather.txt";
     loadBoardFromFile(WEATHER_FILE_PATH);
     
@@ -160,7 +161,7 @@ int main() {
 
     return 0;
 }
-
+// add item in correct location
 void addItemToList(List *list, char *itemName) {
     Item *newItem = (Item*)malloc(sizeof(Item));
     strcpy(newItem->name, itemName);
@@ -176,6 +177,7 @@ void addList(char *name) {
     board = newList;
 }
 
+// search for list
 List* findList(char *name) {
     List *current = board;
     while (current) {
@@ -194,7 +196,7 @@ Item* findItem(List *list, char *name) {
     }
     return NULL;
 }
-
+// edit individul list
 void editList (List *list) {
 
     int choice;
@@ -333,7 +335,7 @@ void deleteItemFromList (List *list, char* name) {
 
 
 }
-
+//edit entire board
 void editBoard () {
 
     int choice;
@@ -466,7 +468,7 @@ void printLists() {
         current = current->next; 
     }
 }
-
+// clear the lists 
 void clearBoard() {
 
     List *current = board;
