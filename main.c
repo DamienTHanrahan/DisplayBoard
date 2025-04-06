@@ -37,18 +37,19 @@ List *board = NULL;
 
 //generic file processing code
 void loadBoardFromFile(char *filename) {
-
+    // empty lists
     clearBoard();
     FILE *file = fopen(filename, "r"); // open for reading
     int lineNum = 0; // Initialize lineNum
 
     if (!file) {
+        //error handling
         printf("Error: could not open file %s\n", filename);
         return;
     }
     else {
         char listName[50], itemName[50];
-        char linebreak[50]; 
+        char linebreak[50]; // copy in the lines and add them using helper functions
         while (fgets(linebreak, sizeof(linebreak), file) != NULL) {
             size_t len = strlen(linebreak);
             if (len > 0 && linebreak[len - 1] == '\n') {
@@ -97,7 +98,7 @@ void displayBoard() {
 
 
 int main() {
-
+    // load pre defined board
     char *WEATHER_FILE_PATH = "weather.txt";
     loadBoardFromFile(WEATHER_FILE_PATH);
     
@@ -160,7 +161,7 @@ int main() {
 
     return 0;
 }
-
+// add item in correct location
 void addItemToList(List *list, char *itemName) {
     Item *newItem = (Item*)malloc(sizeof(Item));
     strcpy(newItem->name, itemName);
@@ -176,6 +177,7 @@ void addList(char *name) {
     board = newList;
 }
 
+// search for list
 List* findList(char *name) {
     List *current = board;
     while (current) {
@@ -185,3 +187,310 @@ List* findList(char *name) {
     }
     return NULL;
 }
+Item* findItem(List *list, char *name) {
+    Item *current = list->items;
+    while (current) {
+        if (strcmp(current->name, name) == 0)
+            return current;
+        current = current->next;
+    }
+    return NULL;
+}
+
+void editList (List *list) {
+
+    int choice;
+    while (1) {
+        
+        
+        printf("\nOptions:\n");
+        printf("1. Edit an item\n");
+        printf("2. Add a new item\n");
+        printf("3. Delete an item\n");
+        printf("4. Display list items\n");
+        printf("5. Return to main menu\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+        getchar();
+
+        if (choice == 5) {
+            
+            break;
+        }
+        else if (choice == 1) {
+
+            char itemName[50];
+                printf("Enter the name of the item to edit: ");
+                fgets(itemName, sizeof(itemName), stdin);
+                size_t len = strlen(itemName);
+                 if (len > 0 && itemName[len - 1] == '\n') {
+                     itemName[len - 1] = '\0'; 
+                 }
+                 Item *newItem = findItem(list, itemName);
+                 editItem(newItem); 
+
+
+
+
+        }
+        else if (choice == 2) {
+            
+
+                char itemName[50];
+                printf("Enter the name of the item to add: ");
+                fgets(itemName, sizeof(itemName), stdin);
+                size_t len = strlen(itemName);
+                 if (len > 0 && itemName[len - 1] == '\n') {
+                     itemName[len - 1] = '\0'; 
+                 }
+
+                 addItemToList(list, itemName);
+
+
+
+        }
+        else if (choice == 3) {
+                char itemName[50];
+                printf("Enter the name of the item to delete: ");
+                fgets(itemName, sizeof(itemName), stdin);
+                size_t len = strlen(itemName);
+                 if (len > 0 && itemName[len - 1] == '\n') {
+                     itemName[len - 1] = '\0'; 
+                 }
+
+                 deleteItemFromList (list, itemName);
+
+        }
+        else if (choice == 4) {
+
+            printItems(list);
+
+        }
+        
+
+    }
+
+
+
+
+}
+
+void printItems (List *list) {
+
+    printf("The items in your chosen list are:\n");
+    Item *current = list->items;
+    while (current) {
+    printf("%s\n", current->name); 
+        current = current->next; 
+    }
+}
+
+void editItem(Item *item) {
+    
+    printf("Enter the new name for %s:\n", item->name);
+    fgets(item->name, sizeof(item->name), stdin);
+                size_t len = strlen(item->name);
+                 if (len > 0 && item->name[len - 1] == '\n') {
+                     item->name[len - 1] = '\0'; 
+                 }
+     
+                 
+
+}
+void deleteItemFromList (List *list, char* name) {
+
+    
+    
+    Item *current = list->items;
+    Item *anteCurrent = NULL; 
+    while (current != NULL) {
+        if (strcmp (current->name, name) == 0) {
+
+            if (anteCurrent == NULL) {
+                list->items = current->next;
+            }
+            else {
+                anteCurrent->next = current->next;
+            }
+
+            free (current);
+            return;
+
+            
+
+
+            
+            
+        } 
+
+        else {
+            anteCurrent = current; 
+            current = current->next; 
+        }
+        
+    }  
+
+    
+    
+
+
+}
+
+void editBoard () {
+
+    int choice;
+
+    while (1) {
+
+        
+        
+        printf("\nOptions:\n");
+        printf("1. Edit the name of a list\n");
+        printf("2. Add a new list\n");
+        printf("3. Delete a list\n");
+        printf("4. Display lists\n");
+        printf("5. Return to main menu\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+        getchar();
+
+        if (choice == 5) {
+            
+            break;
+        }
+        else if (choice == 1) {
+
+            char listName[50];
+                printf("Enter the name of the item to edit: ");
+                fgets(listName, sizeof(listName), stdin);
+                size_t len = strlen(listName);
+                 if (len > 0 && listName[len - 1] == '\n') {
+                     listName[len - 1] = '\0'; 
+                 }
+                
+                 editListName(listName);
+
+
+
+
+        }
+        else if (choice == 2) {
+            
+
+                char listName[50];
+                printf("Enter the name of the list to add: ");
+                fgets(listName, sizeof(listName), stdin);
+                size_t len = strlen(listName);
+                 if (len > 0 && listName[len - 1] == '\n') {
+                     listName[len - 1] = '\0'; 
+                 }
+
+                 addList(listName);
+
+
+
+        }
+        else if (choice == 3) {
+                char listName[50];
+                printf("Enter the name of the list to delete: ");
+                fgets(listName, sizeof(listName), stdin);
+                size_t len = strlen(listName);
+                 if (len > 0 && listName[len - 1] == '\n') {
+                     listName[len - 1] = '\0'; 
+                 }
+
+                 deleteListFromBoard (listName);
+
+        }
+        else if (choice == 4) {
+
+            printLists();
+
+        }
+        
+
+    }
+
+
+
+
+}
+
+void editListName(char *name) {
+    List *current = findList (name); 
+    printf("Please enter the new name for the list %s\n", current->name);
+    fgets(current->name, sizeof(current->name), stdin);
+                size_t len = strlen(current->name);
+                 if (len > 0 && current->name[len - 1] == '\n') {
+                     current->name[len - 1] = '\0'; 
+                 }
+
+}
+
+void deleteListFromBoard (char *name){
+
+    List *current = board;
+    List *anteCurrent = NULL; 
+    while (current != NULL) {
+        if (strcmp (current->name, name) == 0) {
+
+            if (anteCurrent == NULL) {
+                board = current->next;
+            }
+            else {
+                anteCurrent->next = current->next;
+            }
+
+            free (current);
+            return;
+
+            
+
+
+            
+            
+        } 
+
+        else {
+            anteCurrent = current; 
+            current = current->next; 
+        }
+        
+    }
+
+}
+
+void printLists() {
+    printf("The lists on this board are:\n");
+    List *current = board;
+    while (current) {
+    printf("%s\n", current->name); 
+        current = current->next; 
+    }
+}
+
+void clearBoard() {
+
+    List *current = board;
+    List *anteCurrent = NULL;
+    
+    while (current != NULL) {
+         
+        Item *currentItem = current->items;
+        Item *anteCurrentItem = NULL; 
+        while (currentItem != NULL) {
+            anteCurrentItem = currentItem;
+            currentItem = currentItem->next;
+            free (anteCurrentItem); 
+        }
+        anteCurrent = current;
+        current = current->next;
+        free (anteCurrent);  
+        
+        
+    }
+
+    board = NULL; 
+
+}
+
