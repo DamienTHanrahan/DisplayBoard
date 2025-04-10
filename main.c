@@ -32,6 +32,7 @@ List *board = NULL;
     void deleteListFromBoard (char *name);
     void printLists();
     void clearBoard();
+    void saveBoardToFile();
     
 
 
@@ -173,7 +174,18 @@ int main() {
 
            //editBoard();
        } else if (choice == 5) {
-           //saveBoardToFile();
+        char input[50];
+        printf("Enter the name of the file to write to: ");
+        fgets(input, sizeof(input), stdin);
+        size_t len = strlen(input);
+            if (len > 0 && input[len - 1] == '\n') {
+                input[len - 1] = '\0'; 
+            }
+        
+        
+            saveBoardToFile(input);
+
+
        } else {
            printf("Invalid choice. Try again.\n");
        }
@@ -506,4 +518,35 @@ void clearBoard() {
     }
     board = NULL; //Reset board pointer
 }
+
+void saveBoardToFile(char *filename) {
+
+    FILE *file = fopen(filename, "w"); // open for writing
+    
+    if (!file) {
+        //error handling
+        printf("Error: could not open file %s\n", filename);
+        return;
+    }
+
+    List *current = board;
+
+    while (current != NULL) {
+        fprintf(file, "%s:\n", current->name);
+        Item *item = current->items;
+        while (item != NULL) {
+            fprintf(file, " %s\n", item->name);
+            item = item->next;
+        }
+        fprintf(file, "-\n");
+
+        current = current->next;
+    }
+
+
+    fclose(file);
+
+}
+
+
 

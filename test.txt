@@ -1,0 +1,33 @@
+Asia:
+ Saudi Arabia
+ Qatar
+ Japan
+ South Korea
+-
+Africa:
+ South Africa
+ Morocco
+-
+North America:
+ Mexico
+ Canada
+ USA
+-
+South America:
+ Chile
+ Uruguay
+ Argentina
+ Brazil
+-
+Europe:
+ Ireland
+ Switzerland
+ Sweden
+ England
+ Spain
+ Italy
+ France
+ Russia
+ Portugal
+ Spain
+-
