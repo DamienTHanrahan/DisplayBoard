@@ -241,6 +241,7 @@ void editList (List *list) {
     while (1) {
         
         //Menu
+        choice = -1; // reinitialize each time menu is presented
         printf("\nOptions:\n");
         printf("1. Edit an item\n");
         printf("2. Add a new item\n");
@@ -394,7 +395,7 @@ void editBoard () {
 
     while (1) {
 
-        int choice = -1; // reinitialize choice for each menu
+        choice = -1; // reinitialize choice for each menu
         //Menu
         printf("\nOptions:\n");
         printf("1. Edit the name of a list\n");
