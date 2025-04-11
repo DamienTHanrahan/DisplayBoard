@@ -112,7 +112,7 @@ void displayBoard() {
 
 int main() {
     // load pre defined board
-    char *WEATHER_FILE_PATH = "weather.txt";
+    char *WEATHER_FILE_PATH = "fellowshipofthering.txt";
     loadBoardFromFile(WEATHER_FILE_PATH);
     //Menu
    int choice;
@@ -266,7 +266,12 @@ void editList (List *list) {
                      itemName[len - 1] = '\0'; //remove newline
                  }
                  Item *newItem = findItem(list, itemName);
-                 editItem(newItem); 
+                 if (newItem == NULL) {
+                  printf("Not found try again\n");
+                 } 
+
+                 else { editItem(newItem);}
+
 
 
 
@@ -305,6 +310,10 @@ void editList (List *list) {
             //print all itmes in a list
             printItems(list);
 
+        }
+
+        else {
+            printf("Invalid, try again\n");
         }
         
 
@@ -369,7 +378,9 @@ void deleteItemFromList (List *list, char* name) {
             current = current->next; 
         }
         
-    }  
+    } 
+    
+    printf("Not found, please try again\n");
 
     
     
@@ -379,9 +390,11 @@ void deleteItemFromList (List *list, char* name) {
 
 
 void editBoard () {
-    int choice;
+    int choice = -1;
 
     while (1) {
+
+        int choice = -1; // reinitialize choice for each menu
         //Menu
         printf("\nOptions:\n");
         printf("1. Edit the name of a list\n");
@@ -447,6 +460,10 @@ void editBoard () {
             printLists();
 
         }
+
+        else {
+            printf("Not found, try again"); 
+        }
     
     }
 
@@ -454,12 +471,17 @@ void editBoard () {
 //Changes name of a given list
 void editListName(char *name) {
     List *current = findList (name); 
+    if (current == NULL){
+       printf("Not found try again\n");
+    }
+    else {
     printf("Please enter the new name for the list %s\n", current->name);
     fgets(current->name, sizeof(current->name), stdin);
                 size_t len = strlen(current->name);
                  if (len > 0 && current->name[len - 1] == '\n') {
                      current->name[len - 1] = '\0'; 
                  }
+    }             
 
 }
 //Delets a list from a given board
@@ -488,6 +510,8 @@ void deleteListFromBoard (char *name){
         }
         
     }
+
+    printf("Not found, try again\n");
 
 }
 //Print all lists on the board
