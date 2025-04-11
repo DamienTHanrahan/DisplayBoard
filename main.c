@@ -159,7 +159,10 @@ int main() {
                 listName[len - 1] = '\0'; 
             }
             List *list = findList(listName);
-            editList(list); 
+            if (list == NULL) {
+                printf("Not found, try again\n");
+            }
+            else {editList(list); }
 
            
 
