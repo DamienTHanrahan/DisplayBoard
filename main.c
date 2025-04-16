@@ -395,7 +395,7 @@ void editBoard () {
 
     while (1) {
 
-        choice = -1; // reinitialize choice for each menu
+        choice = -1; // reinitialize choice for each menu.
         //Menu
         printf("\nOptions:\n");
         printf("1. Edit the name of a list\n");
